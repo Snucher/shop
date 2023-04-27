@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Админ панель</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="auth-page">
+            <div class="rectangle"></div>
+            <div class="rectangle"></div>
+            <form style="position: absolute; right: 40px; top: 40px; z-index: 150;" method="post" th:action="@{/logout}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" style="background: #ff5757; padding: 0.5rem 1rem; border-radius: 10px; color: #fff;">Выйти</button>
+            </form>
+            <div class="menu">
+                <a href="admin/product/add" style="background: #00F9BC; padding: 0.8rem 0.5rem; border-radius: 0.25rem; width: 10rem; text-align: center;">Добавить товар</a>
+                <div style="display: flex; column-gap: 1rem; row-gap: 1rem;">
+                    <div th:each="product : ${products}" style="display: flex; flex-direction: column; column-gap: 1rem; row-gap: 0.5rem;">
+                        <!-- getImageList -->
+                        <img style="width: 10rem; height: 10rem;" th:src="${'/img/' + product.getImageList()[0].getFileName()}"/>
+                        <p th:text="'Наименование: ' + ${product.getTitle()}"></p>
+                        <p th:text="'Описание: ' + ${product.getDescription()}"></p>
+                        <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+                        <p th:text="'Cклад: ' + ${product.getWarehouse()}"></p>
+                        <p th:text="'Продавец: ' + ${product.getSeller()}"></p>
+                        <p th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
+                        <div style="display: flex; flex-direction: column; row-gap: 0.5rem;">
+                            <a th:href="@{/admin/product/edit/{id}(id=${product.getId()})}" style="background: #00F9BC; padding: 0.8rem 0.5rem; border-radius: 0.25rem; width: 14rem; text-align: center;">Редактирование товара</a>
+                            <a th:href="@{/admin/product/delete/{id}(id=${product.getId()})}" style="background: #ff4d4d; padding: 0.8rem 0.5rem; border-radius: 0.25rem; width: 10rem; text-align: center;">Удаление товара</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
